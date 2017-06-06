@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/fs_build
+cd ~
 
 source viewer.conf
 
@@ -11,7 +11,7 @@ then
 	hg clone $FIRESTORM_REPO firestorm-source
 fi
 
-cd /home/fs_build/firestorm-source
+cd ~/firestorm-source
 
 hg up $FIRESTORM_REPO_TAG
 
