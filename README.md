@@ -25,7 +25,7 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 
 4. CD into the repository directory and run `./build.sh`.
 
-6. Wait a (really) long time for it to build.  The first run of build.sh builds a docker image and compiles inside it, runs that follow use the already built image from your local docker registry.
+6. Wait a (really) long time for it to build.  The first run of build.sh builds a docker image and compiles inside it, following builds use the already built image from your local docker registry.
 
 5. `firestorm-source/build-linux-x86_64/newview` will contain the build artifacts. 
 
