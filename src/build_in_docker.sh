@@ -20,6 +20,11 @@ fi
 cd ~/firestorm-source
 
 hg up $FIRESTORM_REPO_TAG
+if [ $? -ne 0 ]
+then
+	echo "Could not checkout repo tag: $FIRESTORM_REPO_TAG, exiting."
+	exit 1
+fi
 
 if [ ! -d "3p-fmodex" ]
 then
