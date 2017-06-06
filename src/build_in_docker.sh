@@ -9,6 +9,12 @@ then
 	echo "Cloning firestorm repo, please wait..."
 
 	hg clone $FIRESTORM_REPO firestorm-source
+	if [ $? -ne 0 ]
+	then
+		echo "Failed to clone firestorm repo! exiting."
+		exit 1
+        fi
+        
 fi
 
 cd ~/firestorm-source
@@ -19,15 +25,31 @@ if [ ! -d "3p-fmodex" ]
 then
         echo "Cloning 3p-fmodex repo, please wait..."
 
-	hg clone https://bitbucket.org/NickyD/3p-fmodex
-	cd 3p-fmodex
+	if hg clone https://bitbucket.org/NickyD/3p-fmodex
+        then
+		cd 3p-fmodex
+        else
+		echo "Failed to clone 3p-fmodex repo! exiting."
+                exit 1
+        fi
 
         # Monkey patch.  Download the FMod-Ex tar from a local directory
         # instead of the internal IP hardcoded into the original script
-	yes | cp ../../src/fmodex-build-cmd.sh ./build-cmd.sh
+	yes | cp ~/src/fmodex-build-cmd.sh ./build-cmd.sh
 
         autobuild build --all
+
+        if [ $? -ne 0 ]
+	then
+		echo "3p-fmodex: autobuild --all, failed! exiting"
+	fi
+
 	autobuild package
+
+        if [ $? -ne 0 ]
+	then
+		echo "3p-fmodex: autobuild package, failed! exiting"
+	fi
 
 	cd ..
 fi
