@@ -7,6 +7,7 @@ source viewer.conf
 if [ ! -d "firestorm-source" ]
 then
 	echo "Cloning firestorm repo, please wait..."
+
 	hg clone $FIRESTORM_REPO firestorm-source
 fi
 
@@ -16,6 +17,7 @@ hg up $FIRESTORM_REPO_TAG
 
 if [ ! -d "3p-fmodex" ]
 then
+        echo "Cloning 3p-fmodex repo, please wait..."
 
 	hg clone https://bitbucket.org/NickyD/3p-fmodex
 	cd 3p-fmodex
