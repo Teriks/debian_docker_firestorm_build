@@ -46,14 +46,16 @@ then
 
         if [ $? -ne 0 ]
 	then
-		echo "3p-fmodex: autobuild --all, failed! exiting"
+		echo "3p-fmodex: autobuild --all, failed! exiting."
+		exit 1
 	fi
 
 	autobuild package
 
         if [ $? -ne 0 ]
 	then
-		echo "3p-fmodex: autobuild package, failed! exiting"
+		echo "3p-fmodex: autobuild package, failed! exiting."
+		exit 1
 	fi
 
 	cd ..
@@ -76,9 +78,27 @@ set AUTOBUILD_CONFIG_FILE=my_autobuild.xml
 
 autobuild installables edit fmodex platform="$FMOD_PLATFORM" hash="$FMOD_MD5" url="$FMOD_URL"
 
+if [ $? -ne 0 ]
+then
+	echo "firestorm-source: autobuild installables edit, failed! exiting."
+	exit 1
+fi
+
 autobuild -m64 configure -c ReleaseFS_open -- --chan $VIEWER_CHANNEL --package --fmodex $AUTOBUILD_EXTRA_OPTS
 
+if [ $? -ne 0 ]
+then
+	echo "firestorm-source: autobuild configure, failed! exiting."
+	exit 1
+fi
+
 autobuild -m64 build -c ReleaseFS_open --no-configure
+
+if [ $? -ne 0 ]
+then
+	echo "firestorm-source: autobuild build, failed! exiting."
+	exit 1
+fi
 
 
 
