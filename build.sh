@@ -22,11 +22,11 @@ esac
 
 if [ -n "${WIN_VOLUME+set}" ]
 then
-    docker run -i \
+    docker run \
     -e ON_WINDOWS=true \
     -v $WIN_VOLUME:/home/fs_build $IMAGE:$IMAGE_VERSION bash src/entry.sh
 else
-    docker run -i \
+    docker run \
     -e ON_WINDOWS=false \
     -e LOCAL_USER_ID=`id -u $USER` \
     -e LOCAL_USER="$USER" \
