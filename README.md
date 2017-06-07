@@ -17,7 +17,7 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 # Building
 
 
-1. Install docker for your (Linux) platform.
+1. Install docker for your platform.
 
 2. Clone this repository and CD into the repo directory.
 
@@ -27,7 +27,17 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 
 6. Wait a (really) long time for it to build.  The first run of build.sh builds a docker image and compiles inside it, following builds use the already built image from your local docker registry.
 
-5. `firestorm-source/build-linux-x86_64/newview` will contain the build artifacts. 
+5. `firestorm-source/build-linux-x86_64/newview` will contain the build artifacts.
+
+
+# On Windows
+
+The build works with git-bash (MINGW64) and Cygwin bash on Windows with Docker for Windows installed.
+
+A caveat is that the build artifacts will be owned by 'Administrators', because Windows cannot handle
+permissions correctly for files in a volume mounted from the host machine.
+
+Everything in the mounted volume is owned by 'root' from the containers point of view.
 
 
 
