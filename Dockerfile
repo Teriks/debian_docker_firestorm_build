@@ -1,13 +1,13 @@
 FROM ubuntu:16.04
 
-RUN apt update
+RUN apt-get update
 
-RUN apt --yes install --install-recommends \
+RUN apt-get --yes install --install-recommends \
 bison bzip2 cmake curl flex g++-4.8-multilib gcc-4.8-multilib \
 m4 mercurial python2.7 python2.7-dev python-pip libc6-dev libgl1-mesa-dev \
 libglu1-mesa-dev libstdc++6 libx11-dev libxinerama-dev libxml2-dev libxrender-dev
 
-RUN apt --yes install gdb libpng16-16 libpixman-1-0 libcairo2 libxcomposite1 libxcursor1 libxrandr2
+RUN apt-get --yes install gdb libpng16-16 libpixman-1-0 libcairo2 libxcomposite1 libxcursor1 libxrandr2
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 48 \
 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8 \
@@ -27,3 +27,6 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
     
     
 WORKDIR /home/fs_build
+
+ENTRYPOINT ["/bin/bash"]
+
