@@ -11,25 +11,20 @@ then
 	docker build --tag $IMAGE:$IMAGE_VERSION .
 fi
 
-which cmd > /dev/null 2>&1
-if [ $? -eq 0 ]
-then
-    case "$(uname -s)" in
-        MINGW64*)
-           VOLUME=$(pwd -W)
-           ;;
-        CYGWIN*)
-           VOLUME=$(cygpath -w "$PWD")
-           ;;
-        *)
-           echo "Unsupported version of windows bash! (MINGW64 and CYGWIN are supported), exiting."
-           exit 1
-           ;;
-    esac
+case "$(uname -s)" in
+    MINGW64*)
+       WIN_VOLUME=$(pwd -W)
+       ;;
+    CYGWIN*)
+       WIN_VOLUME=$(cygpath -w "$PWD")
+       ;;
+esac
 
+if [ -n "${WIN_VOLUME+set}" ]
+then
     docker run -i \
     -e ON_WINDOWS=true \
-    -v $VOLUME:/home/fs_build $IMAGE:$IMAGE_VERSION bash src/entry.sh
+    -v $WIN_VOLUME:/home/fs_build $IMAGE:$IMAGE_VERSION bash src/entry.sh
 else
     docker run -i \
     -e ON_WINDOWS=false \
