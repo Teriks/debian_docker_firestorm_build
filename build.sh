@@ -6,7 +6,7 @@ IMAGE=firestorm_build_env_ubuntu_16.04
 IMAGE_VERSION=0.1.2
 
 
-if [[ "$(docker images -q firestorm_build_env_ubuntu_16.04:$IMAGE_VERSION 2> /dev/null)" == "" ]]
+if [[ "$(docker images -q $IMAGE:$IMAGE_VERSION 2> /dev/null)" == "" ]]
 then
 	docker build --tag $IMAGE:$IMAGE_VERSION .
 fi
