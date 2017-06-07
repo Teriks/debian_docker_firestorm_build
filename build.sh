@@ -3,12 +3,12 @@
 pushd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 IMAGE=firestorm_build_env_ubuntu_16.04
-IMAGE_VERSION=0.1.2
+IMAGE_VERSION=0.2.0
 
 
 if [[ "$(docker images -q $IMAGE:$IMAGE_VERSION 2> /dev/null)" == "" ]]
 then
-    docker build --tag $IMAGE:$IMAGE_VERSION .
+    docker build --tag $IMAGE:$IMAGE_VERSION src
 fi
 
 case "$(uname -s)" in
