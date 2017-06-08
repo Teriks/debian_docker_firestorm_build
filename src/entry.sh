@@ -27,7 +27,7 @@ then
     # Make the install.cache local to the volume by linking it, so it can be messed with from the interactive shell on windows and be persistant.
     ln -s "$HOME/install.cache" /var/tmp/root/install.cache
     
-    if [ "$INTERACTIVE" = true ]
+    if [ "$ENTER_TO_SHELL" = true ]
     then
         # Drop into a shell if the user requested to 
         do_interactive_shell_message
@@ -45,7 +45,7 @@ else
     # /home/fs_build exists as a mounted volume, useradd warns that it exists but it can be ignored
     useradd --shell /bin/bash -d "$HOME" -u $USER_ID -o -c "" -m "$USER_NAME" > /dev/null 2>&1
     
-    if [ "$INTERACTIVE" = true ]
+    if [ "$ENTER_TO_SHELL" = true ]
     then
         # Drop into a shell if the user requested to 
         do_interactive_shell_message

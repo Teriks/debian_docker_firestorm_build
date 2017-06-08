@@ -33,7 +33,7 @@ esac
 while getopts ":i" option; do
     case $option in
     i) 
-       INTERACTIVE=true
+       ENTER_TO_SHELL=true
        ;;
     ?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
@@ -85,7 +85,7 @@ then
     $WINPTY docker run $INTERACTIVE_FLAG \
     --network=host \
     -e ON_WINDOWS=true \
-    -e INTERACTIVE=$INTERACTIVE \
+    -e ENTER_TO_SHELL=$ENTER_TO_SHELL \
     -v "$WIN_VOLUME"://home/build \
     -v "${ABSOLUTE_HOST_MNT_ROOT}src":${CONTAINER_MNT_SLASH}/home/build/src \
     -v "${ABSOLUTE_HOST_MNT_ROOT}artifacts":${CONTAINER_MNT_SLASH}/home/build/artifacts \
@@ -100,7 +100,7 @@ else
 
     docker run $INTERACTIVE_FLAG \
     -e ON_WINDOWS=false \
-    -e INTERACTIVE=$INTERACTIVE \
+    -e ENTER_TO_SHELL=$ENTER_TO_SHELL \
     -e LOCAL_USER_ID=`id -u $USER` \
     -e LOCAL_USER="$USER" \
     -v "$PWD/install.cache":"/var/tmp/$USER/install.cache" \
