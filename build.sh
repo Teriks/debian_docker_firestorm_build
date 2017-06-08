@@ -12,8 +12,9 @@ ENTRY_SCRIPT=src/entry.sh
 pushd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
-if [[ "$(docker images -q $IMAGE:$IMAGE_VERSION 2> /dev/null)" == "" ]]
+if ! docker volume inspect "$IMAGE:$IMAGE_VERSION" > /dev/null 2>&1
 then
+    echo "Building new docker image \"$IMAGE:$IMAGE_VERSION\" ..."
     docker build --tag $IMAGE:$IMAGE_VERSION src
 fi
 
@@ -35,7 +36,11 @@ while getopts ":i" option; do
     i) 
        ENTER_TO_SHELL=true
        ;;
-    ?) echo "error: option -$OPTARG is not implemented"; exit ;;
+    ?) 
+       echo "error: option -$OPTARG is not implemented."
+       exit 2 
+       popd
+       ;;
     esac
 done
 
