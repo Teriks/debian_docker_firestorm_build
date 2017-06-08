@@ -39,6 +39,7 @@ while getopts ":i" option; do
     esac
 done
 
+
 if type "winpty" > /dev/null 2>&1
 then
     WINPTY=winpty
@@ -55,21 +56,9 @@ then
     
     mkdir -p "artifacts"
     
-    # Use winpty if available for a nice terminal
+    # Default to -ti, unless not supported
     
-    if [ "$INTERACTIVE" = true ]
-    then
-        if [ "$WINPTY" = winpty ]
-        then 
-            INTERACTIVE_FLAG=-ti
-        else
-            # -ti cannot work in win bash without something like winpty
-            # cygwin does not come with it by default, but git bash does.
-            
-            INTERACTIVE_FLAG=-i
-        fi
-    fi
-    
+    INTERACTIVE_FLAG=-ti
     
     if [ "$WINPTY" = winpty ]
     then 
@@ -82,6 +71,12 @@ then
         # caused by winpty
         ABSOLUTE_HOST_MNT_ROOT="/$PWD/"
     else
+    
+        # -ti cannot work in win bash without something like winpty
+        # cygwin does not come with it by default, but git-bash does.
+        
+        INTERACTIVE_FLAG=-i
+    
         # No mount path hacks required without winpty
         
         ABSOLUTE_HOST_MNT_ROOT="$WIN_PWD\\"
