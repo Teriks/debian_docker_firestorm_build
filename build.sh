@@ -49,8 +49,6 @@ then
     fi
     
     mkdir -p "artifacts"
-    
-    echo $IMAGE_HOME
 
     docker run $INTERACTIVE_FLAG \
     --network=host \
