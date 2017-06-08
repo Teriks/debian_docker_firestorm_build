@@ -43,7 +43,7 @@ Everything in the mounted volume is owned by 'root' from the containers point of
 # Interactive Build Shell
 
 `./build.sh -i` will drop you into an interactive shell running inside the docker container,
-the working directory will be the mounted local repository directory.
+the working directory will be the mounted local repository directory (of this repository).
 
 
 
