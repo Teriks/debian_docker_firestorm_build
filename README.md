@@ -11,7 +11,9 @@ The build produced uses FMOD Ex (Sound) which is supplied locally, but not KDU (
 # Configuring The Viewer
 
 
-See viewer.conf for configurable options such as the viewer channel, viewer repo, and repo tag.
+See `config/viewer.conf` for configurable options such as the viewer channel, viewer repo, and repo tag.
+
+`config/viewer.conf` expects bash syntax.
 
 
 # Building On Linux
@@ -22,7 +24,7 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 
 3. Clone this repository and CD into the repo directory.
 
-4. (Optionally) hg clone the Firestorm repo into the folder `firestorm-source` and make modifications.  If you don't do this step, it will be downloaded from the repo in `viewer.conf` at the given tag (default is tip).
+4. (Optionally) hg clone the Firestorm repo into the folder `firestorm-source` and make modifications.  If you don't do this step, it will be downloaded from the repo in `config/viewer.conf` at the given tag (default is tip).
 
 5. CD into this repository directory and run `./build.sh`.  (My repo, not the one in `firestorm-source` if you manually cloned it!).
 

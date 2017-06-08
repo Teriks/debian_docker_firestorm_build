@@ -2,7 +2,7 @@
 
 cd ~
 
-source viewer.conf
+source config/viewer.conf
 
 if [ ! -d "firestorm-source" ]
 then

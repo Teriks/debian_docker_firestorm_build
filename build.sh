@@ -89,7 +89,7 @@ then
     -v "$WIN_VOLUME"://home/build \
     -v "${ABSOLUTE_HOST_MNT_ROOT}src":${CONTAINER_MNT_SLASH}/home/build/src \
     -v "${ABSOLUTE_HOST_MNT_ROOT}artifacts":${CONTAINER_MNT_SLASH}/home/build/artifacts \
-    -v "${ABSOLUTE_HOST_MNT_ROOT}viewer.conf":${CONTAINER_MNT_SLASH}/home/build/viewer.conf \
+    -v "${ABSOLUTE_HOST_MNT_ROOT}config":${CONTAINER_MNT_SLASH}/home/build/config \
     $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT
     
 else
