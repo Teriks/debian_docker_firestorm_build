@@ -42,7 +42,7 @@ then
     # instead of the internal IP hardcoded into the original script
     yes | cp ~/src/fmodex-build-cmd.sh ./build-cmd.sh
 
-    autobuild build --all --id="$FMODEX_AUTOBUILD_BUILD_ID"
+    autobuild build --all --id "$FMODEX_AUTOBUILD_BUILD_ID"
 
     if [ $? -ne 0 ]
     then
