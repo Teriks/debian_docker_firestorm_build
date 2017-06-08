@@ -16,6 +16,8 @@ function do_interactive_shell_message()
 
 if [ "$ON_WINDOWS" = true ]
 then
+    export USER=root
+
     # Resident to the container, build system reads cached dependencies from here
     mkdir /var/tmp/root
     
@@ -37,6 +39,8 @@ then
 else
     USER_ID=${LOCAL_USER_ID:-9001}
     USER_NAME=${LOCAL_USER:-build_user}
+
+    export USER=$USER_NAME
     
     # /home/fs_build exists as a mounted volume, useradd warns that it exists but it can be ignored
     useradd --shell /bin/bash -d "$HOME" -u $USER_ID -o -c "" -m "$USER_NAME" > /dev/null 2>&1
