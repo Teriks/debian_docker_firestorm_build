@@ -17,6 +17,7 @@ then
     docker build --tag $IMAGE:$IMAGE_VERSION src
 fi
 
+
 case "$(uname -s)" in
     MINGW64*)
        ON_WINDOWS=true
@@ -29,7 +30,6 @@ case "$(uname -s)" in
 esac
 
 
-
 while getopts ":i" option; do
     case $option in
     i) 
@@ -39,6 +39,7 @@ while getopts ":i" option; do
     ?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
+
 
 if [ "$ON_WINDOWS" = true ]
 then
