@@ -25,6 +25,7 @@ mkdir -p install.cache
 if [ -n "${WIN_VOLUME+set}" ]
 then
     docker run \
+    --network=host \
     -e ON_WINDOWS=true \
     -v "$WIN_VOLUME":/home/fs_build \
     -v "$WIN_VOLUME\\install.cache":/var/tmp/root/install.cache \
