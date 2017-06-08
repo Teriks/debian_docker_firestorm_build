@@ -21,11 +21,11 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 
 2. Clone this repository and CD into the repo directory.
 
-3. (Optionally) hg clone the Firestorm repo into the folder `firestorm-source` and make modifications.  If you don't do this step, it will be downloaded from the repo in viewer.conf at the given tag (default is tip).
+3. (Optionally) hg clone the Firestorm repo into the folder `firestorm-source` and make modifications.  If you don't do this step, it will be downloaded from the repo in `viewer.conf` at the given tag (default is tip).
 
 4. CD into the repository directory and run `./build.sh`.
 
-6. Wait a (really) long time for it to build.  The first run of build.sh builds a docker image and compiles inside it, following builds use the already built image from your local docker registry.
+6. Wait a (really) long time for it to build.  The first run of `build.sh` builds a docker image and compiles inside it, following builds use the already built image from your local docker registry.
 
 5. `firestorm-source/build-linux-x86_64/newview` will contain the build artifacts.
 
@@ -57,6 +57,16 @@ will actually be located inside of a named docker volume instead of in this repo
 
 
 On Linux, the entire directory you cloned this repo into will be mapped into the container.
+
+# LL Autobuild Package Cache
+
+The download/install cache directory for the Linden autobuild tool is mapped to the directory `install.cache` in repo folder.
+
+When `build.sh` is run for the first time, this directory will be created and autobuild will download archived dependencies into it for the build system to consume.
+
+As long as this directory persist, the dependencies will not need to be re-downloaded in the container when you run another build.
+
+
 
 
 
