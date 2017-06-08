@@ -39,6 +39,11 @@ while getopts ":i" option; do
     esac
 done
 
+if type "winpty" > /dev/null 2>&1
+then
+    WINPTY=winpty
+fi
+
 
 if [ "$ON_WINDOWS" = true ]
 then
@@ -54,32 +59,30 @@ then
     
     if [ "$INTERACTIVE" = true ]
     then
-        if type "winpty" > /dev/null 2>&1
+        if [ "$WINPTY" = winpty ]
         then 
             INTERACTIVE_FLAG=-ti
-        
-            WINPTY=winpty
-            
-            # The path in the container needs an extra slash at the front when
-            # docker is run via winpty, to keep it from trying to resolve to a path
-            # local to the host.
-            CONTAINER_MNT_SLASH=/
-            
-            # Add a slash in front to prevent weird directory resolution behavior
-            # caused by winpty
-            ABSOLUTE_HOST_MNT_ROOT="/$PWD/"
         else
             # -ti cannot work in win bash without something like winpty
             # cygwin does not come with it by default, but git bash does.
             
             INTERACTIVE_FLAG=-i
-        
-            # No mount path hacks required without winpty
-            
-            ABSOLUTE_HOST_MNT_ROOT="$WIN_PWD\\"
         fi
+    fi
+    
+    
+    if [ "$WINPTY" = winpty ]
+    then 
+        # The path in the container needs an extra slash at the front when
+        # docker is run via winpty, to keep it from trying to resolve to a path
+        # local to the host.
+        CONTAINER_MNT_SLASH=/
+        
+        # Add a slash in front to prevent weird directory resolution behavior
+        # caused by winpty
+        ABSOLUTE_HOST_MNT_ROOT="/$PWD/"
     else
-        # Mount normally when not dropping into a shell
+        # No mount path hacks required without winpty
         
         ABSOLUTE_HOST_MNT_ROOT="$WIN_PWD\\"
     fi
