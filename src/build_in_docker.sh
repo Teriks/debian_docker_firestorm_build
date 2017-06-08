@@ -80,6 +80,12 @@ autobuild installables edit fmodex platform="$FMOD_PLATFORM" hash="$FMOD_MD5" ur
 
 build_firestorm
 
+if [ $? -ne 0 ]
+then
+    echo "firestorm-source: build failed! exiting."
+    exit 1
+fi
+
 # Copy the artifacts folder out to the host mapped "artifacts" folder on windows
 
 if [ "$ON_WINDOWS" = true ]
