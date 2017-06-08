@@ -24,7 +24,7 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 
 4. (Optionally) hg clone the Firestorm repo into the folder `firestorm-source` and make modifications.  If you don't do this step, it will be downloaded from the repo in `viewer.conf` at the given tag (default is tip).
 
-5. CD into the repository directory and run `./build.sh`.
+5. CD into this repository directory and run `./build.sh`.  (My repo, not the one in `firestorm-source` if you manually cloned it!).
 
 6. Wait a (really) long time for it to build.  The first run of `build.sh` builds a docker image and compiles inside it, following builds use the already built image from your local docker registry.
 
