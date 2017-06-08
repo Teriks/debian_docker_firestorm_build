@@ -34,7 +34,7 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 # Building On Windows
 
 
-The build works with git-bash (MINGW64) and Cygwin bash on Windows with Docker for Windows installed.
+The build works with Git-Bash (MINGW64) and Cygwin bash on Windows with Docker for Windows installed.
 
 However, the Viewer source and LL autobuild dependencies are cloned/downloaded into a named docker volume instead of mounted folders in this repo's directory.
 
@@ -61,6 +61,8 @@ The working directory will be the build directory.
 If you are building on Windows, the `install.cache` and `firestorm-source` directories in the build directory
 will actually be located inside of a named docker volume instead of in this repo's directory.
 
+Git-Bash works best on Windows for using the interactive shell because it comes with `winpty` by default,
+which allows for a user friendly terminal instead of a STDIN prompt.
 
 On Linux, the entire directory you cloned this repo into will be mapped into the container.
 
