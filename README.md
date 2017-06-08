@@ -40,6 +40,12 @@ permissions correctly for files in a volume mounted from the host machine.
 Everything in the mounted volume is owned by 'root' from the containers point of view.
 
 
+# Interactive Build Shell
+
+`./build.sh -i` will drop you into an interactive shell running inside the docker container,
+the working directory will be the mounted local repository directory.
+
+
 
 
 
