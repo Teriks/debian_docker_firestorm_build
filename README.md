@@ -58,14 +58,6 @@ will actually be located inside of a named docker volume instead of in this repo
 
 On Linux, the entire directory you cloned this repo into will be mapped into the container.
 
-# LL Autobuild Package Cache
-
-The download/install cache directory for the Linden autobuild tool is mapped to the directory `install.cache` in repo folder.
-
-When `build.sh` is run for the first time, this directory will be created and autobuild will download archived dependencies into it for the build system to consume.
-
-As long as this directory persist, the dependencies will not need to be re-downloaded in the container when you run another build.
-
 
 
 
