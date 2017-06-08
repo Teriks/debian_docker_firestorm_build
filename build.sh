@@ -91,20 +91,17 @@ then
     -v "${ABSOLUTE_HOST_MNT_ROOT}artifacts":${CONTAINER_MNT_SLASH}/home/build/artifacts \
     -v "${ABSOLUTE_HOST_MNT_ROOT}viewer.conf":${CONTAINER_MNT_SLASH}/home/build/viewer.conf \
     $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT
+    
 else
 
-    if [ "$INTERACTIVE" = true ]
-    then
-        INTERACTIVE_FLAG=-ti
-    fi
-
-    docker run $INTERACTIVE_FLAG \
+    docker run -ti \
     -e ON_WINDOWS=false \
     -e ENTER_TO_SHELL=$ENTER_TO_SHELL \
     -e LOCAL_USER_ID=`id -u $USER` \
     -e LOCAL_USER="$USER" \
     -v "$PWD/install.cache":"/var/tmp/$USER/install.cache" \
     -v "$PWD":"/home/build" $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT
+    
 fi
 
 popd
