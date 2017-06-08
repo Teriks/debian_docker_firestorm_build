@@ -40,7 +40,7 @@ However, the Viewer source and LL autobuild dependencies are cloned/downloaded i
 
 This is because Windows has problems building the source tree from a mounted host folder, due to case insensitive file system behavior in mounted Windows directories.
 
-When the build is complete, the folder `firestorm-source/build-linux-x86_64/newview` from the source tree is copied into a folder named `artifacts` in this repo directory (on the host).
+When the build is complete, a **tar.xz** archive containing the built and packaged viewer is copied into a folder named `artifacts` in this repo directory (on the host).
 
 The named volume allows successive runs of the build to re-use the previously downloaded (or partially built) repository, and any dependencies downloaded by LL autobuild.
 

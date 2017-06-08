@@ -84,8 +84,8 @@ build_firestorm
 
 if [ "$ON_WINDOWS" = true ]
 then
-    echo "Copying newview artifacts folder to host mapped volume \"artifacts\", please wait..."
-    /bin/cp -Rf ~/firestorm-source/build-linux-x86_64/newview ~/artifacts/
+    echo "Copying build artifacts to host mapped volume \"artifacts\", please wait..."
+    for i in ~/firestorm-source/build-linux-x86_64/newview/*.tar.xz; do /bin/cp "$i" ~/artifacts/; done
     echo "Done copying build artifacts."
 fi
 
