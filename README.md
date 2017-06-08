@@ -47,7 +47,9 @@ The named volume allows successive runs of the build to re-use the previously do
 A caveat of this is that you can only interact with the `firestorm-source` and `install.cache` folder on Windows by using the interactive build shell mentioned below.
 
 
-**Note:**  Your going to have to provision around 7 to 8 gigs of memory for the Windows docker daemon, or gcc will encounter internal compiler errors.
+**Note:**  
+
+Your going to have to provision around 7 to 8 gigs of memory for the Windows docker daemon, or gcc will encounter internal compiler errors.
 
 
 # Interactive Build Shell
