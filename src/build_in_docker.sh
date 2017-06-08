@@ -83,6 +83,7 @@ build_firestorm
 # Copy the artifacts folder out to the host mapped "artifacts" folder on windows
 
 if [ "$ON_WINDOWS" = true ]
+then
     echo "Copying newview artifacts folder to host mapped volume \"artifacts\", please wait..."
     /bin/cp -Rf ~/firestorm-source/build-linux-x86_64/newview ~/artifacts/
     echo "Done copying build artifacts."
