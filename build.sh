@@ -12,7 +12,7 @@ ENTRY_SCRIPT=src/entry.sh
 pushd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
-if ! docker volume inspect "$IMAGE:$IMAGE_VERSION" > /dev/null 2>&1
+if ! docker image inspect "$IMAGE:$IMAGE_VERSION" > /dev/null 2>&1
 then
     echo "Building new docker image \"$IMAGE:$IMAGE_VERSION\" ..."
     docker build --tag $IMAGE:$IMAGE_VERSION src
