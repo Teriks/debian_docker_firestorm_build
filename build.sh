@@ -79,7 +79,7 @@ then
             ABSOLUTE_HOST_MNT_ROOT="$WIN_PWD\\"
         fi
     else
-        # Mount normally when not droping into a shell
+        # Mount normally when not dropping into a shell
         
         ABSOLUTE_HOST_MNT_ROOT="$WIN_PWD\\"
     fi
