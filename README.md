@@ -20,7 +20,7 @@ See `config/viewer.conf` for configurable options such as the viewer channel, vi
 
 1. Have at least 8 gigs of RAM.
 
-2. Install docker for your platform.
+2. Install docker for your platform. (https://www.docker.com/)
 
 3. Clone this repository and CD into the repo directory.
 
