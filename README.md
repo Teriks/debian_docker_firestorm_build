@@ -61,10 +61,14 @@ The working directory will be the build directory.
 If you are building on Windows, the `install.cache` and `firestorm-source` directories in the build directory
 will actually be located inside of a named docker volume instead of in this repo's directory.
 
+On Linux, the entire directory you cloned this repo into will be mapped into the container.
+
+**Note:**
+
 Git-Bash works best on Windows for using the interactive shell because it comes with `winpty` by default,
 which allows for a user friendly terminal instead of a STDIN prompt.
 
-On Linux, the entire directory you cloned this repo into will be mapped into the container.
+
 
 
 
