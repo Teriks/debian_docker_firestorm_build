@@ -64,7 +64,7 @@ fi
 
 FMOD_MD5=$(md5sum 3p-fmodex/fmodex*.tar.bz2 | awk '{ print $1 }')
 FMOD_PLATFORM=linux
-FMOD_URL="file:///home/fs_build/firestorm-source/$(echo 3p-fmodex/fmodex*.tar.bz2)"
+FMOD_URL="file://$HOME/firestorm-source/$(echo 3p-fmodex/fmodex*.tar.bz2)"
 
 
 echo FMOD_PLATFORM $FMOD_PLATFORM
@@ -79,5 +79,13 @@ set AUTOBUILD_CONFIG_FILE=my_autobuild.xml
 autobuild installables edit fmodex platform="$FMOD_PLATFORM" hash="$FMOD_MD5" url="$FMOD_URL"
 
 build_firestorm
+
+# Copy the artifacts folder out to the host mapped "artifacts" folder on windows
+
+if [ "$ON_WINDOWS" = true ]
+    echo "Copying newview artifacts folder to host mapped volume \"artifacts\", please wait..."
+    /bin/cp -Rf ~/firestorm-source/build-linux-x86_64/newview ~/artifacts/
+    echo "Done copying build artifacts."
+fi
 
 

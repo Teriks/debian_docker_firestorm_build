@@ -25,7 +25,7 @@ set -x
 # Note: fmod is provided in 3 flavors (one per platform) of precompiled binaries. We do not have access to source code.
 FMOD_ROOT_NAME="fmodapi"
 FMOD_VERSION="44461"
-URL_BASE="file:///home/fs_build/src/"
+URL_BASE="file://$HOME/src/"
 
 case "$AUTOBUILD_PLATFORM" in
     "windows")

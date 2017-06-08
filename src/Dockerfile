@@ -26,7 +26,7 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
     && chmod +x /usr/local/bin/gosu
     
     
-WORKDIR /home/fs_build
+WORKDIR /home/build
 
 ENTRYPOINT ["/bin/bash"]
 

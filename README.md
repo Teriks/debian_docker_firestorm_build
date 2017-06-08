@@ -14,7 +14,7 @@ The build produced uses FMOD Ex (Sound) which is supplied locally, but not KDU (
 See viewer.conf for configurable options such as the viewer channel, viewer repo, and repo tag.
 
 
-# Building
+# Building On Linux
 
 
 1. Install docker for your platform.
@@ -30,21 +30,33 @@ See viewer.conf for configurable options such as the viewer channel, viewer repo
 5. `firestorm-source/build-linux-x86_64/newview` will contain the build artifacts.
 
 
-# On Windows
+# Building On Windows
+
 
 The build works with git-bash (MINGW64) and Cygwin bash on Windows with Docker for Windows installed.
 
-A caveat is that the build artifacts will be owned by 'Administrators', because Windows cannot handle
-permissions correctly for files in a volume mounted from the host machine.
+However, the Viewer source and LL autobuild dependencies are cloned/downloaded into a named docker volume instead of mounted folders in this repo's directory.
 
-Everything in the mounted volume is owned by 'root' from the containers point of view.
+This is because Windows has problems building the source tree from a mounted host folder, due to case insensitive file system behavior in mounted Windows directories.
+
+When the build is complete, the folder `firestorm-source/build-linux-x86_64/newview` from the source tree is copied into a folder named `artifacts` in this repo directory (on the host).
+
+The named volume allows successive runs of the build to re-use the previously downloaded (or partially built) repository, and any dependencies downloaded by LL autobuild.
+
+A caveat of this is that you can only interact with the `firestorm-source` and `install.cache` folder on Windows by using the interactive build shell mentioned below.
 
 
 # Interactive Build Shell
 
-`./build.sh -i` will drop you into an interactive shell running inside the docker container,
-the working directory will be the mounted local repository directory (of this repository).
+`./build.sh -i` will drop you into an interactive shell running inside the docker container.
 
+The working directory will be the build directory.
+
+If you are building on Windows, the `install.cache` and `firestorm-source` directories in the build directory
+will actually be located inside of a named docker volume instead of in this repo's directory.
+
+
+On Linux, the entire directory you cloned this repo into will be mapped into the container.
 
 
 
