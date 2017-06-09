@@ -72,8 +72,9 @@ echo FMOD_MD5 $FMOD_MD5
 echo FMOD_URL $FMOD_URL
 
 
-cp autobuild.xml my_autobuild.xml
-set AUTOBUILD_CONFIG_FILE=my_autobuild.xml
+cp autobuild.xml docker_autobuild.xml
+
+export AUTOBUILD_CONFIG_FILE=docker_autobuild.xml
 
 
 autobuild installables edit fmodex platform="$FMOD_PLATFORM" hash="$FMOD_MD5" url="$FMOD_URL"
