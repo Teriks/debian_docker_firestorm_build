@@ -45,6 +45,9 @@ else
     # /home/fs_build exists as a mounted volume, useradd warns that it exists but it can be ignored
     useradd --shell /bin/bash -d "$HOME" -u $USER_ID -o -c "" -m "$USER_NAME" > /dev/null 2>&1
     
+    groupadd docker_shared
+    usermod -aG docker_shared "$USER_NAME"
+    
     if [ "$ENTER_TO_SHELL" = true ]
     then
         # Drop into a shell if the user requested to 

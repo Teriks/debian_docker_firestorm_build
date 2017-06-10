@@ -71,6 +71,30 @@ Git-Bash works best on Windows for using the interactive shell because it comes 
 which allows for a user friendly terminal instead of a STDIN prompt.
 
 
+# Pakefile usage
+
+If you have python 3.5+ installed, you can also use the pakefile to start the build and interact with the container.
+
+You need to install:  https://github.com/Teriks/pake
+
+On Linux:  `sudo pip3 install git+git://github.com/Teriks/pake.git@0.7.0.0a1`
+
+On Windows:  `pip install git+git://github.com/Teriks/pake.git@0.7.0.0a1`
+
+
+You can start the build by CD'ing into this repo's directory and running `pake`.
+
+You can also start the interactive build shell by running `pake shell`.
+
+For future reference, use `pake -ti` to list all documented pake tasks.
+
+
+The advantage of using pake is that the interactive build shell will offer a
+standard prompt in pretty much every shell, including CMD.exe and Powershell on Windows.
+
+On cygwin you can get a TTY prompt if `winpty` is available.  Git-Bash has `winpty` by default.
+
+
 
 
 
