@@ -96,7 +96,7 @@ def run_docker(enter_to_shell):
 @pk.task(no_header=True)
 def build_image(ctx):
     if not docker_image_exists(ctx, IMAGE):
-        subprocess.call('docker', 'build', '--tag', IMAGE)
+        subprocess.call(['docker', 'build', '--tag', IMAGE])
     else:
         print('Image up to date.')
 
@@ -105,7 +105,7 @@ def build_image(ctx):
 def create_volume(ctx):
     if on_windows():
         if not docker_volume_exists(ctx, WIN_VOLUME):
-            subprocess.call('docker', 'volume', 'create')
+            subprocess.call(['docker', 'volume', 'create'])
         else:
             print('Named volume up to date.')
     else:
