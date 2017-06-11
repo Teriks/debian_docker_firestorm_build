@@ -47,7 +47,7 @@ def get_windows_interactive_switch(have_winpty):
           
     
 def run_docker(enter_to_shell):
-    enter_to_shell = 'true' if enter_to_shell else 'false'
+    interactive_message = 'true' if enter_to_shell else 'false'
     
 
     have_winpty = shutil.which('winpty') != None
@@ -69,7 +69,7 @@ def run_docker(enter_to_shell):
         args += [
             'docker', 'run', get_windows_interactive_switch(have_winpty),
             '-e', 'ON_WINDOWS=true',
-            '-e', 'INTERACTIVE_MESSAGE='+enter_to_shell,
+            '-e', 'INTERACTIVE_MESSAGE=' + interactive_message,
             '-v', '{volume}:{sl}/home/build'.format(volume=WIN_VOLUME, sl=sl),
             '-v', '{pwd}\\src:{sl}/home/build/src'.format(pwd=pwd, sl=sl),
             '-v', '{pwd}\\artifacts:{sl}/home/build/artifacts'.format(pwd=pwd, sl=sl),
@@ -82,7 +82,7 @@ def run_docker(enter_to_shell):
         args = [
             'docker', 'run', '-ti',
             '-e', 'ON_WINDOWS=false',
-            '-e', 'INTERACTIVE_MESSAGE=' + enter_to_shell,
+            '-e', 'INTERACTIVE_MESSAGE=' + interactive_message,
             '-e', 'LOCAL_USER_ID=' + str(os.getuid()),
             '-e', 'LOCAL_USER=' + getpass.getuser(),
             '-v', pwd+'/install.cache:/var/tmp/{}/install.cache'.format(username),
