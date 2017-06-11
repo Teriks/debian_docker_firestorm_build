@@ -77,9 +77,9 @@ If you have python 3.5+ installed, you can also use the pakefile to start the bu
 
 You need to install:  https://github.com/Teriks/pake
 
-On Linux:  `sudo pip3 install git+git://github.com/Teriks/pake.git@0.7.0.0a1`
+On Linux:  `sudo pip3 install git+git://github.com/Teriks/pake.git@0.9.0.2a1`
 
-On Windows:  `pip install git+git://github.com/Teriks/pake.git@0.7.0.0a1`
+On Windows:  `pip install git+git://github.com/Teriks/pake.git@0.9.0.2a1`
 
 
 You can start the build by CD'ing into this repo's directory and running `pake`.
