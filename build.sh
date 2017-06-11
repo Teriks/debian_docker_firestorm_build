@@ -7,6 +7,7 @@ WIN_VOLUME=firestorm_build_env_volume
 
 
 ENTRY_SCRIPT=src/entry.sh
+ENTRY_SCRIPT_ARG=src/build_in_docker.sh
 
 
 pushd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -34,7 +35,10 @@ esac
 while getopts ":i" option; do
     case $option in
     i) 
-       ENTER_TO_SHELL=true
+       INTERACTIVE_MESSAGE=true
+       
+       # Unset entry command, so you just get dropped into a shell
+       ENTRY_SCRIPT_ARG=
        ;;
     ?) 
        echo "error: option -$OPTARG is not implemented."
@@ -90,22 +94,22 @@ then
     $WINPTY docker run $INTERACTIVE_FLAG \
     --network=host \
     -e ON_WINDOWS=true \
-    -e ENTER_TO_SHELL=$ENTER_TO_SHELL \
+    -e INTERACTIVE_MESSAGE=$INTERACTIVE_MESSAGE \
     -v "$WIN_VOLUME"://home/build \
     -v "${ABSOLUTE_HOST_MNT_ROOT}src":${CONTAINER_MNT_SLASH}/home/build/src \
     -v "${ABSOLUTE_HOST_MNT_ROOT}artifacts":${CONTAINER_MNT_SLASH}/home/build/artifacts \
     -v "${ABSOLUTE_HOST_MNT_ROOT}config":${CONTAINER_MNT_SLASH}/home/build/config \
-    $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT
+    $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT $ENTRY_SCRIPT_ARG
     
 else
 
     docker run -ti \
     -e ON_WINDOWS=false \
-    -e ENTER_TO_SHELL=$ENTER_TO_SHELL \
+    -e INTERACTIVE_MESSAGE=$INTERACTIVE_MESSAGE \
     -e LOCAL_USER_ID=`id -u $USER` \
     -e LOCAL_USER="$USER" \
     -v "$PWD/install.cache":"/var/tmp/$USER/install.cache" \
-    -v "$PWD":"/home/build" $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT
+    -v "$PWD":"/home/build" $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT $ENTRY_SCRIPT_ARG
     
 fi
 

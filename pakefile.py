@@ -69,7 +69,7 @@ def run_docker(enter_to_shell):
         args += [
             'docker', 'run', get_windows_interactive_switch(have_winpty),
             '-e', 'ON_WINDOWS=true',
-            '-e', 'ENTER_TO_SHELL='+enter_to_shell,
+            '-e', 'INTERACTIVE_MESSAGE='+enter_to_shell,
             '-v', '{volume}:{sl}/home/build'.format(volume=WIN_VOLUME, sl=sl),
             '-v', '{pwd}\\src:{sl}/home/build/src'.format(pwd=pwd, sl=sl),
             '-v', '{pwd}\\artifacts:{sl}/home/build/artifacts'.format(pwd=pwd, sl=sl),
@@ -82,7 +82,7 @@ def run_docker(enter_to_shell):
         args = [
             'docker', 'run', '-ti',
             '-e', 'ON_WINDOWS=false',
-            '-e', 'ENTER_TO_SHELL=' + enter_to_shell,
+            '-e', 'INTERACTIVE_MESSAGE=' + enter_to_shell,
             '-e', 'LOCAL_USER_ID=' + str(os.getuid()),
             '-e', 'LOCAL_USER=' + getpass.getuser(),
             '-v', pwd+'/install.cache:/var/tmp/{}/install.cache'.format(username),
@@ -90,6 +90,10 @@ def run_docker(enter_to_shell):
             IMAGE, ENTRY_SCRIPT
             ]
             
+
+    if not enter_to_shell:
+        args += ['/home/build/src/build_in_docker.sh']
+
     subprocess.call(args)
     
 

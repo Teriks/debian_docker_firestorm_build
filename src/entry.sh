@@ -5,12 +5,15 @@ export HOME=/home/build
 
 function do_interactive_shell_message()
 {
-    echo "=========================================="
-    echo "Dropping into interactive container shell."
-    echo "Current directory is: \"$PWD\"".
-    echo "Leave with 'exit'."
-    echo "=========================================="
-    echo ""
+    if [ "$INTERACTIVE_MESSAGE" = true ]
+    then
+        echo "=========================================="
+        echo "Dropping into interactive container shell."
+        echo "Current directory is: \"$PWD\"".
+        echo "Leave with 'exit'."
+        echo "=========================================="
+        echo ""
+    fi
 }
 
 
@@ -27,15 +30,10 @@ then
     # Make the install.cache local to the volume by linking it, so it can be messed with from the interactive shell on windows and be persistant.
     ln -s "$HOME/install.cache" /var/tmp/root/install.cache
     
-    if [ "$ENTER_TO_SHELL" = true ]
-    then
-        # Drop into a shell if the user requested to 
-        do_interactive_shell_message
-        exec /bin/bash
-    fi
+    do_interactive_shell_message
     
-    # Windows does not care about volume permissions, just run the build
-    exec "$HOME/src/build_in_docker.sh"
+    # Windows does not care about volume permissions, just enter the shell as root
+    exec /bin/bash "$@"
 else
     USER_ID=${LOCAL_USER_ID:-9001}
     USER_NAME=${LOCAL_USER:-build_user}
@@ -48,13 +46,7 @@ else
     groupadd docker_shared
     usermod -aG docker_shared "$USER_NAME"
     
-    if [ "$ENTER_TO_SHELL" = true ]
-    then
-        # Drop into a shell if the user requested to 
-        do_interactive_shell_message
-        exec /usr/local/bin/gosu "$USER_NAME" /bin/bash
-    fi
-
-    exec /usr/local/bin/gosu "$USER_NAME" bash "$HOME/src/build_in_docker.sh"
+    do_interactive_shell_message
+    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash "$@"
 fi
 
