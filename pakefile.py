@@ -54,11 +54,11 @@ def run_docker(enter_to_shell):
     
     pwd = os.getcwd()
     
-    sl = ''
+    path_escape = ''
     
     if have_winpty:
         pwd = '/'+pwd
-        sl = '/'
+        path_escape = '/'
     
     if on_windows():
         args = []
@@ -70,10 +70,10 @@ def run_docker(enter_to_shell):
             'docker', 'run', get_windows_interactive_switch(have_winpty),
             '-e', 'ON_WINDOWS=true',
             '-e', 'INTERACTIVE_MESSAGE=' + interactive_message,
-            '-v', '{volume}:{sl}/home/build'.format(volume=WIN_VOLUME, sl=sl),
-            '-v', '{pwd}\\src:{sl}/home/build/src'.format(pwd=pwd, sl=sl),
-            '-v', '{pwd}\\artifacts:{sl}/home/build/artifacts'.format(pwd=pwd, sl=sl),
-            '-v', '{pwd}\\config:{sl}/home/build/config'.format(pwd=pwd, sl=sl),
+            '-v', '{volume}:{path_escape}/home/build'.format(volume=WIN_VOLUME, path_escape=path_escape),
+            '-v', '{pwd}\\src:{path_escape}/home/build/src'.format(pwd=pwd, path_escape=path_escape),
+            '-v', '{pwd}\\artifacts:{path_escape}/home/build/artifacts'.format(pwd=pwd, path_escape=path_escape),
+            '-v', '{pwd}\\config:{path_escape}/home/build/config'.format(pwd=pwd, path_escape=path_escape),
             IMAGE, ENTRY_SCRIPT
             ]
     else:
@@ -92,7 +92,7 @@ def run_docker(enter_to_shell):
             
 
     if not enter_to_shell:
-        args += ['/home/build/src/build_in_docker.sh']
+        args += ['{path_escape}/home/build/src/build_in_docker.sh'.format(path_escape=path_escape)]
 
     subprocess.call(args)
     
