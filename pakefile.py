@@ -4,10 +4,10 @@ import getpass
 
 import shutil
 
-# We need .call for interactive output
+# We need process.call for interactive output
 # pake normally queues output to the task until it is done.
-# subprocess.call is fine to use with pake as long as the build is not multithreaded, or is completely serial.
-import subprocess
+# process.call is fine to use with pake as long as the build is not multithreaded, or is completely serial.
+from pake import process
 
 pk = pake.init()
 
@@ -27,19 +27,23 @@ def on_windows():
     return os.name == 'nt'
 
 
-def docker_image_exists(ctx, name):
-    return ctx.check_call('docker', 'image', 'inpect', name, ignore_errors=True) != 0
+def docker_image_exists(name):
+    return process.call('docker', 'image', 'inpect', name, 
+                        stderr=process.DEVNULL,
+                        stdout=process.DEVNULL) != 0
 
 
-def docker_volume_exists(ctx, name):
-    return ctx.check_call('docker', 'volume', 'inpect', name, ignore_errors=True) != 0
+def docker_volume_exists(name):
+    return process.call('docker', 'volume', 'inpect', name,
+                        stderr=process.DEVNULL,
+                        stdout=process.DEVNULL) != 0
     
     
 def get_windows_interactive_switch(have_winpty):
     have_uname = shutil.which('uname') != None
     
     if have_uname:
-        uname = subprocess.check_output(['uname', '-s']).decode()
+        uname = process.check_output('uname', '-s').decode()
         if uname.startswith('MINGW64') or uname.startswith('CYGWIN'):
             return '-ti' if have_winpty else '-i'
 
@@ -85,8 +89,8 @@ def run_docker(enter_to_shell):
             '-e', 'INTERACTIVE_MESSAGE=' + interactive_message,
             '-e', 'LOCAL_USER_ID=' + str(os.getuid()),
             '-e', 'LOCAL_USER=' + getpass.getuser(),
-            '-v', pwd+'/install.cache:/var/tmp/{}/install.cache'.format(username),
-            '-v', pwd+':/home/build',
+            '-v', '{pwd}/install.cache:/var/tmp/{username}/install.cache'.format(pwd=pwd, username=username),
+            '-v', '{pwd}:/home/build'.format(pwd=pwd),
             IMAGE, ENTRY_SCRIPT
             ]
             
@@ -94,20 +98,20 @@ def run_docker(enter_to_shell):
     if not enter_to_shell:
         args += ['{path_escape}/home/build/src/build_in_docker.sh'.format(path_escape=path_escape)]
 
-    subprocess.call(args)
+    process.call(args)
     
 
 @pk.task(no_header=True)
 def build_image(ctx):
-    if not docker_image_exists(ctx, IMAGE):
-        subprocess.call(['docker', 'build', '--tag', IMAGE])
+    if not docker_image_exists(IMAGE):
+        process.call('docker', 'build', '--tag', IMAGE)
 
 
 @pk.task(build_image, no_header=True)
 def create_volume(ctx):
     if on_windows():
-        if not docker_volume_exists(ctx, WIN_VOLUME):
-            subprocess.call(['docker', 'volume', 'create'])    
+        if not docker_volume_exists(WIN_VOLUME):
+            process.call('docker', 'volume', 'create')    
         
 
 @pk.task(create_volume, no_header=True)
