@@ -77,9 +77,9 @@ If you have python 3.5+ installed, you can also use the pakefile to start the bu
 
 You need to install:  https://github.com/Teriks/pake
 
-On Linux:  `sudo pip3 install python-pake`
+On Linux:  `sudo pip3 install python-pake --upgrade`
 
-On Windows:  `pip install python-pake`
+On Windows:  `pip install python-pake --upgrade`
 
 
 You can start the build by CD'ing into this repo's directory and running `pake`.
