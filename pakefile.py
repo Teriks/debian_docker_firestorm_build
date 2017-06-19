@@ -104,14 +104,14 @@ def run_docker(enter_to_shell):
 @pk.task(no_header=True)
 def build_image(ctx):
     if not docker_image_exists(IMAGE):
-        process.call('docker', 'build', '--tag', IMAGE)
+        process.check_call('docker', 'build', '--tag', IMAGE)
 
 
 @pk.task(build_image, no_header=True)
 def create_volume(ctx):
     if on_windows():
         if not docker_volume_exists(WIN_VOLUME):
-            process.call('docker', 'volume', 'create')    
+            process.check_call('docker', 'volume', 'create', WIN_VOLUME)    
         
 
 @pk.task(create_volume, no_header=True)
