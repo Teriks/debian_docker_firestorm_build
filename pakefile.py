@@ -1,13 +1,9 @@
 import pake
 import os
 import getpass
-
 import shutil
-
-# We need process.call for interactive output
-# pake normally queues output to the task until it is done.
-# process.call is fine to use with pake as long as the build is not multithreaded, or is completely serial.
 from pake import process
+import subprocess
 
 pk = pake.init()
 
@@ -23,20 +19,24 @@ ENTRY_SCRIPT = 'src/entry.sh'
 IMAGE = '{}:{}'.format(IMAGE_NAME, IMAGE_VERSION)
 
 
+import subprocess
+
 def on_windows():
     return os.name == 'nt'
 
 
 def docker_image_exists(name):
-    return process.call('docker', 'image', 'inpect', name, 
-                        stderr=process.DEVNULL,
-                        stdout=process.DEVNULL) != 0
+    code = process.call('docker', 'image', 'inspect', name, 
+                        stdout=process.DEVNULL, 
+                        stderr=process.DEVNULL)
+    return code == 0
 
 
 def docker_volume_exists(name):
-    return process.call('docker', 'volume', 'inpect', name,
-                        stderr=process.DEVNULL,
-                        stdout=process.DEVNULL) != 0
+    code = process.call('docker', 'volume', 'inspect', name, 
+                        stdout=process.DEVNULL, 
+                        stderr=process.DEVNULL)
+    return code == 0
     
     
 def get_windows_interactive_switch(have_winpty):
@@ -104,14 +104,14 @@ def run_docker(enter_to_shell):
 @pk.task(no_header=True)
 def build_image(ctx):
     if not docker_image_exists(IMAGE):
-        process.check_call('docker', 'build', '--tag', IMAGE)
+        ctx.call('docker', 'build', '--tag', IMAGE, 'src')
 
 
 @pk.task(build_image, no_header=True)
 def create_volume(ctx):
     if on_windows():
         if not docker_volume_exists(WIN_VOLUME):
-            process.check_call('docker', 'volume', 'create', WIN_VOLUME)    
+            ctx.call('docker', 'volume', 'create', WIN_VOLUME)    
         
 
 @pk.task(create_volume, no_header=True)
@@ -132,6 +132,6 @@ def build(ctx):
         pake.FileHelper().makedirs('artifacts')
     
     run_docker(enter_to_shell=False)
-    
-    
+  
+ 
 pake.run(pk, tasks=build)
