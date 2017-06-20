@@ -3,7 +3,6 @@ import os
 import getpass
 import shutil
 from pake import process
-import subprocess
 
 pk = pake.init()
 
