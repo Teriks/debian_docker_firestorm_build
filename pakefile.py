@@ -4,7 +4,7 @@ import getpass
 import shutil
 from pake import process
 
-pk = pake.init()
+pk = pake.init(show_task_headers=False)
 
 
 IMAGE_NAME = pk.get_define('IMAGE', 'firestorm_build_env_ubuntu_16.04')
@@ -25,17 +25,15 @@ def on_windows():
 
 
 def docker_image_exists(name):
-    code = process.call('docker', 'image', 'inspect', name, 
+    return process.call('docker', 'image', 'inspect', name, 
                         stdout=process.DEVNULL, 
-                        stderr=process.DEVNULL)
-    return code == 0
+                        stderr=process.DEVNULL) == 0
 
 
 def docker_volume_exists(name):
-    code = process.call('docker', 'volume', 'inspect', name, 
+    return process.call('docker', 'volume', 'inspect', name, 
                         stdout=process.DEVNULL, 
-                        stderr=process.DEVNULL)
-    return code == 0
+                        stderr=process.DEVNULL) == 0
     
     
 def get_windows_interactive_switch(have_winpty):
@@ -100,20 +98,20 @@ def run_docker(enter_to_shell):
     process.call(args)
     
 
-@pk.task(no_header=True)
+@pk.task
 def build_image(ctx):
     if not docker_image_exists(IMAGE):
         ctx.call('docker', 'build', '--tag', IMAGE, 'src')
 
 
-@pk.task(build_image, no_header=True)
+@pk.task(build_image)
 def create_volume(ctx):
     if on_windows():
         if not docker_volume_exists(WIN_VOLUME):
             ctx.call('docker', 'volume', 'create', WIN_VOLUME)    
         
 
-@pk.task(create_volume, no_header=True)
+@pk.task(create_volume)
 def shell(ctx):
     """Run an interactive shell inside the container."""
     
@@ -123,7 +121,7 @@ def shell(ctx):
     run_docker(enter_to_shell=True)
     
     
-@pk.task(create_volume, no_header=True)
+@pk.task(create_volume)
 def build(ctx):
     """Build Firestorm Viewer inside the container."""
 
