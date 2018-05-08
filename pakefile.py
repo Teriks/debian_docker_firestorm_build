@@ -81,7 +81,7 @@ def run_docker(enter_to_shell):
     
         username = getpass.getuser()
         args = [
-            'docker', 'run', '--privileged',
+            'docker', 'run', '--privileged', '-ti',
             '-e', 'ON_WINDOWS=false',
             '-e', 'INTERACTIVE_MESSAGE=' + interactive_message,
             '-e', 'LOCAL_USER_ID=' + str(os.getuid()),

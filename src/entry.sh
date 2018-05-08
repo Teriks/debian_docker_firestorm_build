@@ -66,7 +66,7 @@ else
     export USER=$USER_NAME
     
     # /home/fs_build exists as a mounted volume, useradd warns that it exists but it can be ignored
-    useradd --disabled-password --gecos '' --shell /bin/bash -d "$HOME" -u $USER_ID -o -c "" -m "$USER_NAME" > /dev/null 2>&1
+    useradd --shell /bin/bash -d "$HOME" -u $USER_ID -o -c "" -m "$USER_NAME" > /dev/null 2>&1
 
     groupadd docker_shared
     usermod -aG docker_shared "$USER_NAME"
@@ -75,7 +75,7 @@ else
     
     do_interactive_shell_message
 
-    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash --rcfile <(echo "$RC_FILE") "$@"
+    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash "$@"
 fi
 
 
