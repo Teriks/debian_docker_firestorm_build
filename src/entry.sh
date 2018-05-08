@@ -75,7 +75,7 @@ else
     
     do_interactive_shell_message
 
-    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash "$@"
+    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash --rcfile <(echo "$RC_FILE") "$@"
 fi
 
 
