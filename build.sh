@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IMAGE=firestorm_build_env_ubuntu_16.04
-IMAGE_VERSION=0.2.2
+IMAGE_VERSION=0.2.3
 
 WIN_VOLUME=firestorm_build_env_volume
 
@@ -91,7 +91,7 @@ then
         ABSOLUTE_HOST_MNT_ROOT="$WIN_PWD\\"
     fi
 
-    $WINPTY docker run $INTERACTIVE_FLAG \
+    $WINPTY docker run $INTERACTIVE_FLAG --privileged \
     --network=host \
     -e ON_WINDOWS=true \
     -e INTERACTIVE_MESSAGE=$INTERACTIVE_MESSAGE \
@@ -103,7 +103,7 @@ then
     
 else
 
-    docker run -ti \
+    docker run -ti --privileged \
     -e ON_WINDOWS=false \
     -e INTERACTIVE_MESSAGE=$INTERACTIVE_MESSAGE \
     -e LOCAL_USER_ID=`id -u $USER` \

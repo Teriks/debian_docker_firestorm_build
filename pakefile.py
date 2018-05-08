@@ -9,7 +9,7 @@ pk = pake.init(show_task_headers=False)
 
 IMAGE_NAME = pk.get_define('IMAGE', 'firestorm_build_env_ubuntu_16.04')
 
-IMAGE_VERSION = pk.get_define('IMAGE_VERSION', '0.2.2')
+IMAGE_VERSION = pk.get_define('IMAGE_VERSION', '0.2.3')
 
 WIN_VOLUME = pk.get_define('WIN_VOLUME', 'firestorm_build_env_volume')
 
@@ -68,7 +68,7 @@ def run_docker(enter_to_shell):
             args += ['winpty']
     
         args += [
-            'docker', 'run', get_windows_interactive_switch(have_winpty),
+            'docker', 'run', '--privileged', get_windows_interactive_switch(have_winpty),
             '-e', 'ON_WINDOWS=true',
             '-e', 'INTERACTIVE_MESSAGE=' + interactive_message,
             '-v', '{volume}:{path_escape}/home/build'.format(volume=WIN_VOLUME, path_escape=path_escape),
@@ -81,7 +81,7 @@ def run_docker(enter_to_shell):
     
         username = getpass.getuser()
         args = [
-            'docker', 'run', '-ti',
+            'docker', 'run', '--privileged',
             '-e', 'ON_WINDOWS=false',
             '-e', 'INTERACTIVE_MESSAGE=' + interactive_message,
             '-e', 'LOCAL_USER_ID=' + str(os.getuid()),

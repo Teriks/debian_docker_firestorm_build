@@ -5,32 +5,34 @@ Scripts to build Firestorm Viewer in an x64 bit Ubuntu 16.04 docker container.
 The produced binary should be compatible with most debian distros when you
 install the correct dependencies listed on Firestorm's website.
 
-The build produced uses FMOD Ex (Sound) which is supplied locally, but not KDU (Openjpeg Instead).
+The build produced uses fmodstudio (Sound) which is supplied locally, but not KDU (Openjpeg Instead).
 
 
-# Configuring The Viewer
+# Configuring The Viewer/Build
 
 
-See `config/viewer.conf` for configurable options such as the viewer channel, viewer repo, and repo tag.
+See `config/build.conf` for configurable options such as the viewer channel, viewer repo, and repo tag.
 
-`config/viewer.conf` expects bash syntax.
+`config/build.conf` expects bash syntax.
 
 
 # Building On Linux
 
-1. Have at least 8 gigs of RAM.
+1. Have at least 8 gigs of RAM, or set `USE_SWAPFILE=true` and `SWAPFILE_SIZE` in `config/build.conf`
 
 2. Install docker for your platform. (https://www.docker.com/)
 
 3. Clone this repository and CD into the repo directory.
 
-4. (Optionally) hg clone the Firestorm repo into the folder `firestorm-source` and make modifications.  If you don't do this step, it will be downloaded from the repo in `config/viewer.conf` at the given tag (default is tip).
+4. (Optionally) hg clone the Firestorm repo into the folder `firestorm-source` and make modifications.  If you don't do this step, it will be downloaded from the repo in `config/build.conf` at the given tag (default is tip).
 
-5. CD into this repository directory and run `./build.sh`.  (My repo, not the one in `firestorm-source` if you manually cloned it!).
+5. (Optionally) hg clone the Firestorm fs-build-variables repo into the folder `build-variables` and make modifications.  If you don't do this step, it will be downloaded from the repo in `config/build.conf` at the given tag (default is tip).
 
-6. Wait a (really) long time for it to build.  The first run of `build.sh` builds a docker image and compiles inside it, following builds use the already built image from your local docker registry.
+6. CD into this repository directory and run `./build.sh`.  (My repo, not the one in `firestorm-source` if you manually cloned it!).
 
-7. `firestorm-source/build-linux-x86_64/newview` will contain the build artifacts.
+7. Wait a (really) long time for it to build.  The first run of `build.sh` builds a docker image and compiles inside it, following builds use the already built image from your local docker registry.
+
+8. `firestorm-source/build-linux-x86_64/newview` will contain the build artifacts.
 
 
 # Building On Windows
@@ -53,6 +55,8 @@ A caveat of this is that you can only interact with the `firestorm-source` and `
 
 Your going to have to provision around 7 to 8 gigs of memory for the Windows docker daemon, or gcc will encounter internal compiler errors.
 
+Set `USE_SWAPFILE=true` and `SWAPFILE_SIZE` in `config/build.conf` if you can't do this.
+
 
 # Interactive Build Shell
 
@@ -60,8 +64,8 @@ Your going to have to provision around 7 to 8 gigs of memory for the Windows doc
 
 The working directory will be the build directory.
 
-If you are building on Windows, the `install.cache` and `firestorm-source` directories in the build directory
-will actually be located inside of a named docker volume instead of in this repo's directory.
+If you are building on Windows, the `install.cache`, `firestorm-source`, and `build-variables` directories
+will actually be located inside of a named docker volume instead of the repo directory on the host.
 
 On Linux, the entire directory you cloned this repo into will be mapped into the container.
 

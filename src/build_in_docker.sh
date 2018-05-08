@@ -1,8 +1,10 @@
 #!/bin/bash
 
+export HOME=$BUILD_DIR
+
 cd ~
 
-source config/viewer.conf
+source config/build.conf
 
 if [ ! -d "firestorm-source" ]
 then
@@ -14,39 +16,80 @@ then
         echo "Failed to clone firestorm repo! exiting."
         exit 1
     fi
-        
 fi
 
+if [ ! -d "build-variables" ]
+then
+    echo "Cloning firestorm build-variables repo, please wait..."
+
+    hg clone $FIRESTORM_BUILD_VARIABLES_REPO build-variables
+    if [ $? -ne 0 ]
+    then
+        echo "Failed to clone firestorm build-variables repo! exiting."
+        exit 1
+    fi
+fi
+
+
+export AUTOBUILD_PLATFORM=linux64
+export AUTOBUILD_VARIABLES_FILE=~/build-variables/variables
+export AUTOBUILD_CONFIGURE_ARCH=$(arch)
+
+
+cd ~/build-variables
+
+
+hg up $FIRESTORM_BUILD_VARIABLES_REPO_TAG
+if [ $? -ne 0 ]
+then
+    echo "Could not checkout firestorm build-variables repo tag: $FIRESTORM_BUILD_VARIABLES_REPO_TAG, exiting."
+    exit 1
+fi
+
+
 cd ~/firestorm-source
+
 
 hg up $FIRESTORM_REPO_TAG
 if [ $? -ne 0 ]
 then
-    echo "Could not checkout repo tag: $FIRESTORM_REPO_TAG, exiting."
+    echo "Could not checkout firestorm repo tag: $FIRESTORM_REPO_TAG, exiting."
     exit 1
 fi
 
-if [ ! -d "3p-fmodex" ]
-then
-    echo "Cloning 3p-fmodex repo, please wait..."
 
-    if hg clone https://bitbucket.org/NickyD/3p-fmodex
+
+if [ ! -d "3p-fmodstudio" ]
+then
+    echo "Cloning 3p-fmodstudio repo, please wait..."
+
+    if hg clone https://bitbucket.org/Ansariel/3p-fmodstudio
     then
-        cd 3p-fmodex
+        cd 3p-fmodstudio
     else
-        echo "Failed to clone 3p-fmodex repo! exiting."
+        echo "Failed to clone 3p-fmodstudio repo! exiting."
         exit 1
     fi
+    
+    cp ~/src/fmodstudioapi*linux.tar.gz .
 
-    # Monkey patch.  Download the FMod-Ex tar from a local directory
-    # instead of the internal IP hardcoded into the original script
-    yes | cp ~/src/fmodex-build-cmd.sh ./build-cmd.sh
+    # hack, this is used to extract the tar.
+    # extract has a million dependencies and only this
+    # functionality is ever used by the fmodstudio build script
+    if [ ! -d "d_bin" ]
+    then
+        mkdir d_bin
+        printf "#!/bin/bash\ntar -xvf \$@\n" > ./d_bin/extract
+        chmod a+x ./d_bin/extract
+    fi
 
-    autobuild build --all --id "$FMODEX_AUTOBUILD_BUILD_ID"
+    export PATH=$(pwd)/d_bin:$PATH
+
+    autobuild build --all --id "$FMODSTUDIO_AUTOBUILD_BUILD_ID"
 
     if [ $? -ne 0 ]
     then
-        echo "3p-fmodex: autobuild --all, failed! exiting."
+        echo "3p-fmodstudio: autobuild --all, failed! exiting."
         exit 1
     fi
 
@@ -54,7 +97,7 @@ then
 
     if [ $? -ne 0 ]
     then
-        echo "3p-fmodex: autobuild package, failed! exiting."
+        echo "3p-fmodstudio: autobuild package, failed! exiting."
         exit 1
     fi
 
@@ -62,9 +105,9 @@ then
 fi
 
 
-FMOD_MD5=$(md5sum 3p-fmodex/fmodex*.tar.bz2 | awk '{ print $1 }')
-FMOD_PLATFORM=linux
-FMOD_URL="file://$HOME/firestorm-source/$(echo 3p-fmodex/fmodex*.tar.bz2)"
+FMOD_MD5=$(md5sum 3p-fmodstudio/fmodstudio*.tar.bz2 | awk '{ print $1 }')
+FMOD_PLATFORM=$AUTOBUILD_PLATFORM
+FMOD_URL="file://$HOME/firestorm-source/$(echo 3p-fmodstudio/fmodstudio*.tar.bz2)"
 
 
 echo FMOD_PLATFORM $FMOD_PLATFORM
@@ -76,8 +119,7 @@ cp autobuild.xml docker_autobuild.xml
 
 export AUTOBUILD_CONFIG_FILE=docker_autobuild.xml
 
-
-autobuild installables edit fmodex platform="$FMOD_PLATFORM" hash="$FMOD_MD5" url="$FMOD_URL"
+autobuild installables edit fmodstudio platform="$FMOD_PLATFORM" hash="$FMOD_MD5" url="$FMOD_URL"
 
 build_firestorm
 
