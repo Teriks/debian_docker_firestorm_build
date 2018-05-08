@@ -59,7 +59,7 @@ then
     do_interactive_shell_message
     
     # Windows does not care about volume permissions, just enter the shell as root
-    exec /bin/bash --rcfile <(echo "$RC_FILE") "$@"
+    exec /bin/bash --rcfile <(echo "$RC_FILE") -i "$@"
 else
     USER_ID=${LOCAL_USER_ID:-9001}
     USER_NAME=${LOCAL_USER:-build_user}
@@ -84,7 +84,7 @@ else
     
     do_interactive_shell_message
 
-    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash --rcfile $TMPFILE "$@"
+    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash --rcfile $TMPFILE -i "$@"
 fi
 
 
