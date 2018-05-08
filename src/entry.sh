@@ -15,6 +15,8 @@ function do_interactive_shell_message()
 
 source config/build.conf
 
+USE_SWAPFILE=${USE_SWAPFILE,,}
+
 export HOME=/home/build
 export BUILD_DIR=$HOME
 
@@ -29,7 +31,6 @@ if [ $USE_SWAPFILE = true ] ; then
     fi
     swapon ~/$SWAPFILE_NAME && echo "Swapfile activated."
 fi
-
 
 read -r -d '' RC_FILE <<-EOF
 SWAPFILE_ACTIVE=$USE_SWAPFILE
