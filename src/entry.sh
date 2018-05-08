@@ -35,7 +35,7 @@ read -r -d '' RC_FILE <<-EOF
 SWAPFILE_ACTIVE=$USE_SWAPFILE
 function clean_swap {
 	if [ $USE_SWAPFILE = true ] && [ $SWAPFILE_ACTIVE=true ] ; then
-		swapoff ~/$SWAPFILE_NAME && set SWAPFILE_ACTIVE=true && echo "Swapfile deactivated." 
+		sudo swapoff ~/$SWAPFILE_NAME && set SWAPFILE_ACTIVE=true && echo "Swapfile deactivated." 
 	fi
 }
 trap clean_swap 0
@@ -72,10 +72,18 @@ else
     usermod -aG docker_shared "$USER_NAME"
 
     echo '%docker_shared ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+    # make the rcfile outside the working directory
+    # in some place thats not persisted. Make it readable
+    # by the newly created user.
+
+    TMPFILE=$(mktemp /tmp/rcfile.XXXXXXXXXX)
+    echo "$RC_FILE" > $TMPFILE
+    chown "$USER_NAME:docker_shared" $TMPFILE
     
     do_interactive_shell_message
 
-    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash --rcfile <(echo "$RC_FILE") "$@"
+    exec /usr/local/bin/gosu "$USER_NAME" /bin/bash --rcfile $TMPFILE "$@"
 fi
 
 
