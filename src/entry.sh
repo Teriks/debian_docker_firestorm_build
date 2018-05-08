@@ -36,7 +36,7 @@ read -r -d '' RC_FILE <<-EOF
 SWAPFILE_ACTIVE=$USE_SWAPFILE
 function clean_swap {
 	if [ $USE_SWAPFILE = true ] && [ $SWAPFILE_ACTIVE=true ] ; then
-		sudo swapoff ~/$SWAPFILE_NAME && set SWAPFILE_ACTIVE=true && echo "Swapfile deactivated." 
+		sudo swapoff ~/$SWAPFILE_NAME && set SWAPFILE_ACTIVE=false && echo "Swapfile deactivated." 
 	fi
 }
 trap clean_swap 0
