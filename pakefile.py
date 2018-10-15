@@ -9,7 +9,7 @@ pk = pake.init(show_task_headers=False)
 
 IMAGE_NAME = pk.get_define('IMAGE', 'firestorm_build_env_ubuntu_16.04')
 
-IMAGE_VERSION = pk.get_define('IMAGE_VERSION', '0.2.3')
+IMAGE_VERSION = pk.get_define('IMAGE_VERSION', '0.3.0')
 
 WIN_VOLUME = pk.get_define('WIN_VOLUME', 'firestorm_build_env_volume')
 
@@ -78,6 +78,7 @@ def run_docker(enter_to_shell):
             IMAGE, ENTRY_SCRIPT
             ]
     else:
+        pake.FileHelper().makedirs('install.cache')
     
         username = getpass.getuser()
         args = [

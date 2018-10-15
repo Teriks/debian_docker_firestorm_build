@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export HOME=$BUILD_DIR
+export CXXFLAGS=-Wno-error=misleading-indentation
 
 cd ~
 

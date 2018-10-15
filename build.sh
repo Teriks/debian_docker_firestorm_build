@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IMAGE=firestorm_build_env_ubuntu_16.04
-IMAGE_VERSION=0.2.3
+IMAGE_VERSION=0.3.0
 
 WIN_VOLUME=firestorm_build_env_volume
 
@@ -102,6 +102,8 @@ then
     $IMAGE:$IMAGE_VERSION $ENTRY_SCRIPT $ENTRY_SCRIPT_ARG
     
 else
+
+    mkdir -p "$PWD/install.cache"
 
     docker run -ti --privileged \
     -e ON_WINDOWS=false \
